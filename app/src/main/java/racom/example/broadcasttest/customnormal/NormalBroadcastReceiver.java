@@ -21,8 +21,9 @@ public class NormalBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        //接收广播后的操作
-        Toast.makeText(context, "自定义普通广播", Toast.LENGTH_SHORT).show();
+        String extra = intent.getStringExtra("extra");
+        String action = intent.getAction();
+        Toast.makeText(context, "extra=" + extra + "action=" + action, Toast.LENGTH_SHORT).show();
     }
 
 }

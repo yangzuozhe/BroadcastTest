@@ -1,6 +1,7 @@
 package racom.example.broadcasttest.order;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -29,12 +30,13 @@ public class CustomOrderBroadcastActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mActionText = getPackageName() + ".OREDR";
+        mActionText = getPackageName() + ".customnormal.NormalBroadcastReceiver";
         mTextView = findViewById(R.id.tvHello);
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mActionText);
+                intent.putExtra("extra", "extra数据");
                 sendOrderedBroadcast(intent, null);
             }
         });
@@ -43,21 +45,21 @@ public class CustomOrderBroadcastActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        //实例化广播接收器A和B
-//        mOrderBroadcastReceiver = new OrderBroadcastReceiver();
-//        mNormalBroadcastReceiver = new NormalBroadcastReceiver();
-//        //添加广播接收器 A 和 B 的对象，以及优先级
-//        registerBroadcastReceiver(mOrderBroadcastReceiver, 1);
-//        registerBroadcastReceiver(mNormalBroadcastReceiver, 100);
+        //实例化广播接收器A和B
+        mOrderBroadcastReceiver = new OrderBroadcastReceiver();
+        mNormalBroadcastReceiver = new NormalBroadcastReceiver();
+        //添加广播接收器 A 和 B 的对象，以及优先级
+        registerBroadcastReceiver(mOrderBroadcastReceiver, 1);
+        registerBroadcastReceiver(mNormalBroadcastReceiver, 100);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        //解除注册广播A
-//        unregisterReceiver(mOrderBroadcastReceiver);
-//        //解除注册广播B
-//        unregisterReceiver(mNormalBroadcastReceiver);
+        //解除注册广播A
+        unregisterReceiver(mOrderBroadcastReceiver);
+        //解除注册广播B
+        unregisterReceiver(mNormalBroadcastReceiver);
     }
 
     /**

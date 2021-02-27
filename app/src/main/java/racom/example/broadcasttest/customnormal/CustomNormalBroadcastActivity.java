@@ -28,17 +28,19 @@ public class CustomNormalBroadcastActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mActionBroadcast = getPackageName() + ".MY_BROADCAST";
+        mActionBroadcast = getPackageName() + ".customnormal.NormalBroadcastReceiver";
         findViewById(R.id.tvHello).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent;
                 //如果安卓版本小于8.0就使用隐式调用，如果安卓版本大于8.0就使用显性调用
-                if (Build.VERSION.SDK_INT < 26) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                     intent = new Intent(mActionBroadcast);
                 } else {
                     intent = new Intent(mActionBroadcast);
-                    intent.setComponent(new ComponentName(CustomNormalBroadcastActivity.this.getPackageName(), "com.example.boardreceiver1.MyReceiver"));
+//                    intent.putExtra("extra","extra数据");
+//                    intent.setAction("action数据");
+//                    intent.setComponent(new ComponentName(CustomNormalBroadcastActivity.this.getPackageName(), "racom.example.broadcasttest.customnormal.NormalBroadcastReceiver"));
                 }
                 sendBroadcast(intent);
             }
@@ -52,15 +54,15 @@ public class CustomNormalBroadcastActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        //1.  实例化BroadcastReceiver子类
-//        mBroadcastReceiver = new NormalBroadcastReceiver();
-//        //2. 实例化 IntentFilter. 这就相当于静态注册的 <intent-filter>
-//        IntentFilter intentFilter = new IntentFilter();
-//        //3 . 设置接收广播的类型 这就相当于静态注册的<intent-filter> 中的 <action>
-//        //这里要注意了，和系统广播不一样，这里我们自定义一个字符串
-//        intentFilter.addAction(mActionBroadcast);
-//        //4.动态注册：调用Context的registerReceiver（）方法
-//        registerReceiver(mBroadcastReceiver, intentFilter);
+        //1.  实例化BroadcastReceiver子类
+        mBroadcastReceiver = new NormalBroadcastReceiver();
+        //2. 实例化 IntentFilter. 这就相当于静态注册的 <intent-filter>
+        IntentFilter intentFilter = new IntentFilter();
+        //3 . 设置接收广播的类型 这就相当于静态注册的<intent-filter> 中的 <action>
+        //这里要注意了，和系统广播不一样，这里我们自定义一个字符串
+        intentFilter.addAction(mActionBroadcast);
+        //4.动态注册：调用Context的registerReceiver（）方法
+        registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
     /**
